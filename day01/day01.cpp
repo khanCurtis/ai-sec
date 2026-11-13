@@ -5,6 +5,28 @@
 using namespace std;
 using namespace torch::indexing;
 
+void raw_mem() {
+  cout << "\n--- Part 7: Raw Memory ---\n";
+  vector<float> v = {1.0f, 2.0f, 3.0f};
+  torch::Tensor shared  =torch::from_blob(v.data(), {3}, torch::kFloat);
+  torch::Tensor owned = shared.clone();
+
+  v[0] = 100.0f;
+  cout << shared << owned;
+  float* p = owned.data_ptr<float>();
+  cout << p[0] << " " << p[1] << "\n";
+}
+
+void aliasing() {
+  cout << "\n--- Part 6: Aliasing ---\n";
+  torch::Tensor a = torch::ones({3});
+  torch::Tensor alias = a;
+  torch::Tensor copy = a.clone();
+
+  a.add_(5);
+  cout << a << alias << copy;
+}
+
 void shapes() {
   cout << "\n--- Part 5: Shapes ---\n";
   torch::Tensor a = torch::ones({2, 3});
@@ -96,4 +118,7 @@ int main() {
   attributes();
   math();
   indexing();
+  shapes();
+  aliasing();
+  raw_mem();
 }
