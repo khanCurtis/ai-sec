@@ -5,8 +5,22 @@
 using namespace std;
 using namespace torch::indexing;
 
+void exercise() {
+  cout << "\n--- Part 8: Excersizes ---\n"; 
+  // build a 3x4 integer tensor holding 0 through 11
+  torch::Tensor t = torch::arange(12).reshape({3, 4});
+  // print the sum of each row and the sum of each column
+  cout << "row sums: " << t.sum(1) << "\n";
+  cout << "col sums: " << t.sum(0) << "\n";
+  // print just the middle block; rows 1-2 and columns 1-2
+  cout << t.index({Slice(1, 3), Slice(1, 3)}) << "\n";
+  // print the mean of the entire tensor
+  cout << "mean: " << t.to(torch::kFloat).mean() << "\n";
+}
+
 void raw_mem() {
   cout << "\n--- Part 7: Raw Memory ---\n";
+
   vector<float> v = {1.0f, 2.0f, 3.0f};
   torch::Tensor shared  =torch::from_blob(v.data(), {3}, torch::kFloat);
   torch::Tensor owned = shared.clone();
@@ -19,6 +33,7 @@ void raw_mem() {
 
 void aliasing() {
   cout << "\n--- Part 6: Aliasing ---\n";
+
   torch::Tensor a = torch::ones({3});
   torch::Tensor alias = a;
   torch::Tensor copy = a.clone();
@@ -29,6 +44,7 @@ void aliasing() {
 
 void shapes() {
   cout << "\n--- Part 5: Shapes ---\n";
+
   torch::Tensor a = torch::ones({2, 3});
   torch::Tensor b = torch::zeros({2, 3});
 
@@ -43,6 +59,7 @@ void shapes() {
 
 void indexing() {
   cout << "\n--- Part 4: Indexing ---\n";
+
   torch::Tensor t = torch::tensor({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
 
   cout << t.index({0}) << "\n";
@@ -57,6 +74,7 @@ void indexing() {
 
 void math() {
   cout << "\n--- Part 3: Math ---\n";
+
   torch::Tensor a = torch::tensor({{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}});
   torch::Tensor b = torch::ones({2, 3}) * 10;
 
@@ -77,6 +95,7 @@ void math() {
 
 void attributes() {
   cout << "\n--- Part 2: Attributes ---\n";
+
   torch::Tensor a = torch::tensor({{1, 2, 3}, {4, 5, 6}});
 
   cout << "sizes: " << a.sizes() << "\n";
@@ -114,6 +133,7 @@ int main() {
   cout << t << endl;
 
   torch::manual_seed(0);
+
   creation();
   attributes();
   math();
@@ -121,4 +141,5 @@ int main() {
   shapes();
   aliasing();
   raw_mem();
+  exercise();
 }
