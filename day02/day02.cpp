@@ -14,6 +14,8 @@ void line_fit() {
   torch::Tensor w = torch::randn({1}, torch::requires_grad());
   torch::Tensor b = torch::zeros({1}, torch::requires_grad());
   const double lr = 0.1;
+  //const double lr = 0.001; // Slow Learning
+  //const double lr = 1.5; // Fast Learning
 
   for (int step = 0; step < 200; ++step) {
     torch::Tensor pred = w * X + b;
